@@ -17,9 +17,15 @@
 ## 特点
 - `checkout_ui_mode`: `redirect`
 - `tag`: `hosted_checkout_session`
-- `processor_entity`: `openai_ie` (爱尔兰实体)
+- `processor_entity`: `openai_ie`
 - 响应包含 `url` 字段用于跳转
 - `client_secret` 为 null
 
-## 适用地区
-主要用于欧洲用户 (EUR 货币)
+## 国家切换
+通过修改请求中的 `billing_details` 字段可切换到任意国家：
+```json
+"billing_details": {
+    "country": "{country_code}",  // ISO 3166-1 alpha-2 国家代码
+    "currency": "{currency_code}" // ISO 4217 货币代码
+}
+```

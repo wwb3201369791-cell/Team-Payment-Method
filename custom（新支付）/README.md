@@ -17,9 +17,15 @@
 ## 特点
 - `checkout_ui_mode`: `custom`
 - `tag`: `custom_checkout_session`
-- `processor_entity`: `openai_llc` (美国实体)
+- `processor_entity`: `openai_llc`
 - 响应包含 `client_secret` 用于 Stripe.js
 - `url` 为 null (无跳转)
 
-## 适用地区
-主要用于美国用户 (USD 货币)
+## 国家切换
+通过修改请求中的 `billing_details` 字段可切换到任意国家：
+```json
+"billing_details": {
+    "country": "{country_code}",  // ISO 3166-1 alpha-2 国家代码
+    "currency": "{currency_code}" // ISO 4217 货币代码
+}
+```

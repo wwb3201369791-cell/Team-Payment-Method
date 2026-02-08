@@ -15,8 +15,8 @@ URL: POST https://chatgpt.com/backend-api/payments/checkout
         "seat_quantity": 5
     },
     "billing_details": {
-        "country": "FR",
-        "currency": "EUR"
+        "country": "{country_code}",
+        "currency": "{currency_code}"
     },
     "cancel_url": "https://chatgpt.com/#pricing",
     "promo_campaign": {

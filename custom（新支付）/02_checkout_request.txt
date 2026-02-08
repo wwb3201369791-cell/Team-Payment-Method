@@ -16,8 +16,8 @@ URL: POST https://chatgpt.com/backend-api/payments/checkout
         "seat_quantity": 5
     },
     "billing_details": {
-        "country": "US",
-        "currency": "USD"
+        "country": "{country_code}",
+        "currency": "{currency_code}"
     },
     "cancel_url": "https://chatgpt.com/#pricing",
     "promo_campaign": {
@@ -38,8 +38,8 @@ URL: POST https://chatgpt.com/backend-api/payments/checkout
     "plan_name": "chatgptteamplan",
     "requires_manual_approval": false,
     "billing_details": {
-        "country": "US",
-        "currency": "USD"
+        "country": "{country_code}",
+        "currency": "{currency_code}"
     },
     "url": null,
     "client_secret": "{client_secret}",
