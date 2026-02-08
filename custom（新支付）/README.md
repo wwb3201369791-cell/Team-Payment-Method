@@ -29,3 +29,14 @@
     "currency": "{currency_code}" // ISO 4217 货币代码
 }
 ```
+
+## 获取 Access Token
+在 ChatGPT 页面控制台执行以下代码获取 Token：
+```javascript
+// 方法1：直接获取并打印
+fetch('https://chatgpt.com/api/auth/session').then(r => r.json()).then(d => console.log(d.accessToken));
+
+// 方法2：在脚本中使用
+const session = await fetch('https://chatgpt.com/api/auth/session').then(r => r.json());
+const token = session.accessToken;
+```
