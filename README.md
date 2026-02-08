@@ -9,8 +9,23 @@
 | **UI 模式** | `custom` | `redirect` |
 | **Tag** | `custom_checkout_session` | `hosted_checkout_session` |
 | **处理实体** | `openai_llc` | `openai_ie` |
-| **支付页面** | 嵌入式 (Stripe Elements) | 跳转到 Stripe 托管页面 |
+| **支付页面** | ChatGPT 内嵌页面 | Stripe 托管页面 |
 | **响应特征** | 返回 `client_secret` | 返回 `url` |
+| **跳转方式** | 构造 URL 跳转 | 直接使用返回的 URL |
+
+## 跳转 URL 格式
+
+两种模式都可以跳转到支付页面，但 URL 格式不同：
+
+| 模式 | 跳转 URL 格式 |
+|------|--------------|
+| **Custom** | `https://chatgpt.com/checkout/{processor_entity}/{session_id}` |
+| **Redirect** | 直接使用响应中的 `url` 字段 (如: `https://pay.openai.com/c/pay/{session_id}`) |
+
+> [!TIP]
+> **Custom 模式也支持跳转！**
+> 
+> 虽然 Custom 模式响应的 `url` 为 null，但可以通过 `processor_entity` 和 `checkout_session_id` 构造跳转 URL。
 
 ## 目录结构
 
@@ -35,9 +50,9 @@
               ↓
 2. POST /backend-api/payments/checkout → 创建 checkout session
               ↓
-3. 完成支付 (方式因模式而异)
+3. 跳转到支付页面 (URL 格式因模式而异)
               ↓
-4. 订阅激活
+4. 完成支付 → 订阅激活
 ```
 
 ## 国家/货币切换
@@ -46,15 +61,15 @@
 
 ```json
 "billing_details": {
-    "country": "{country_code}",  // ISO 3166-1 alpha-2 国家代码 (如: US, JP, GB)
-    "currency": "{currency_code}" // ISO 4217 货币代码 (如: USD, JPY, GBP)
+    "country": "{country_code}",  // ISO 3166-1 alpha-2 国家代码 (如: US, JP, KR)
+    "currency": "{currency_code}" // ISO 4217 货币代码 (如: USD, JPY, KRW)
 }
 ```
 
 > [!IMPORTANT]
 > **货币代码必须使用大写字母**
 > 
-> 货币代码（如 `USD`, `JPY`, `GBP`）必须使用大写形式。使用小写（如 `usd`）会导致请求失败。
+> 货币代码（如 `USD`, `JPY`, `KRW`）必须使用大写形式。使用小写（如 `usd`）会导致请求失败。
 
 ## 获取 Access Token
 
