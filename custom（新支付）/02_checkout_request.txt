@@ -1,0 +1,54 @@
+=== Checkout Session 创建请求 ===
+URL: POST https://chatgpt.com/backend-api/payments/checkout
+用途: 创建 Stripe Checkout Session (Custom 模式)
+
+=== 关键 Headers ===
+- authorization: Bearer {access_token}
+- oai-device-id: {device_id}
+- openai-sentinel-token: {"p":"...", "t":"...", "c":"...", "id":"...", "flow":"chatgpt_checkout"}
+
+=== 请求体 ===
+{
+    "plan_name": "chatgptteamplan",
+    "team_plan_data": {
+        "workspace_name": "{workspace_name}",
+        "price_interval": "month",
+        "seat_quantity": 5
+    },
+    "billing_details": {
+        "country": "US",
+        "currency": "USD"
+    },
+    "cancel_url": "https://chatgpt.com/#pricing",
+    "promo_campaign": {
+        "promo_campaign_id": "team-1-month-free",
+        "is_coupon_from_query_param": false
+    },
+    "checkout_ui_mode": "custom"
+}
+
+=== 响应 ===
+{
+    "tag": "custom_checkout_session",
+    "checkout_session_id": "{session_id}",
+    "publishable_key": "pk_live_...",
+    "processor_entity": "openai_llc",
+    "checkout_ui_mode": "custom",
+    "automatic_tax_enabled": true,
+    "plan_name": "chatgptteamplan",
+    "requires_manual_approval": false,
+    "billing_details": {
+        "country": "US",
+        "currency": "USD"
+    },
+    "url": null,
+    "client_secret": "{client_secret}",
+    "status": "open",
+    "payment_status": "unpaid"
+}
+
+=== 关键点 ===
+1. checkout_ui_mode = "custom" 表示使用 Stripe Elements 嵌入式支付
+2. 返回 client_secret 用于 Stripe.js 确认支付
+3. publishable_key 用于初始化 Stripe.js
+4. url = null (不跳转，在页面内完成支付)

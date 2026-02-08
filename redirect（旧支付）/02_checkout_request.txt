@@ -1,0 +1,45 @@
+=== Checkout Session 创建请求 ===
+URL: POST https://chatgpt.com/backend-api/payments/checkout
+用途: 创建 Stripe Checkout Session (Redirect/Hosted 模式)
+
+=== 关键 Headers ===
+- authorization: Bearer {access_token}
+- content-type: application/json
+
+=== 请求体 ===
+{
+    "plan_name": "chatgptteamplan",
+    "team_plan_data": {
+        "workspace_name": "{workspace_name}",
+        "price_interval": "month",
+        "seat_quantity": 5
+    },
+    "billing_details": {
+        "country": "FR",
+        "currency": "EUR"
+    },
+    "cancel_url": "https://chatgpt.com/#pricing",
+    "promo_campaign": {
+        "promo_campaign_id": "team-1-month-free",
+        "is_coupon_from_query_param": false
+    },
+    "checkout_ui_mode": "redirect"
+}
+
+=== 响应 ===
+{
+    "tag": "hosted_checkout_session",
+    "checkout_session_id": "{session_id}",
+    "publishable_key": "pk_live_...",
+    "processor_entity": "openai_ie",
+    "checkout_ui_mode": "hosted",
+    "automatic_tax_enabled": true,
+    "url": "https://pay.openai.com/c/pay/{session_id}",
+    "client_secret": null
+}
+
+=== 关键点 ===
+1. checkout_ui_mode = "redirect" 表示跳转到 Stripe 托管支付页面
+2. 响应返回 url 字段，直接跳转到该 URL 完成支付
+3. client_secret = null (不需要 Stripe.js)
+4. processor_entity = "openai_ie" (爱尔兰实体，对应欧洲用户)

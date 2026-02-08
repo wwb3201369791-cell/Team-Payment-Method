@@ -1,0 +1,32 @@
+=== Sentinel Token 请求 ===
+URL: POST https://chatgpt.com/backend-api/sentinel/req
+用途: 获取 openai-sentinel-token 用于后续 checkout 请求
+
+=== 请求体 ===
+{
+    "p": "{base64编码的浏览器指纹数据}",
+    "id": "{oai-did}",
+    "flow": "chatgpt_checkout"
+}
+
+=== 响应 ===
+{
+    "persona": "chatgpt-noauth",
+    "token": "{sentinel_token}",
+    "expire_after": 540,
+    "expire_at": {timestamp},
+    "turnstile": {
+        "required": true,
+        "dx": "{turnstile_data}"
+    },
+    "proofofwork": {
+        "required": true,
+        "seed": "{seed}",
+        "difficulty": "{difficulty}"
+    }
+}
+
+=== 关键点 ===
+- flow 参数值为 "chatgpt_checkout"
+- 响应的 token 用于构建 openai-sentinel-token header 的 "c" 字段
+- 与 custom 模式使用相同的 sentinel 请求
